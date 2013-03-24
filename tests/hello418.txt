@@ -1,0 +1,3 @@
+{"time": 0, "work": "cmd=418wisdom;x=1", "resp": "OMG, 418 is so gr8!"}
+{"time": 2000, "work": "cmd=418wisdom;x=11", "resp": "If all else fails... buy Kayvon donuts"}
+{"time": 400, "work": "cmd=lastrequest", "resp": "ack" }
