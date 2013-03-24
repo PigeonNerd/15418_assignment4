@@ -24,12 +24,12 @@
 {"time": 4750, "work": "cmd=countprimes;n=850060", "resp": "67623"}
 {"time": 4900, "work": "cmd=418wisdom;x=56", "resp": "If all else fails... buy Kayvon donuts"}
 {"time": 5000, "work": "cmd=418wisdom;x=66", "resp": "You will PWN your classmates in the parallelism competition"}
-{"time": 5100, "work": "cmd=countprimes;n=444090", "resp": "37271"}
+{"time": 5100, "work": "cmd=countprimes;n=444090", "resp": "37272"}
 {"time": 5250, "work": "cmd=418wisdom;x=123", "resp": "Bring out all the stops in assignment 4."}
 {"time": 5750, "work": "cmd=countprimes;n=850060", "resp": "67623"}
 {"time": 5900, "work": "cmd=418wisdom;x=56", "resp": "If all else fails... buy Kayvon donuts"}
 {"time": 6000, "work": "cmd=418wisdom;x=66", "resp": "You will PWN your classmates in the parallelism competition"}
-{"time": 6100, "work": "cmd=countprimes;n=300090", "resp": "26002"}
+{"time": 6100, "work": "cmd=countprimes;n=300090", "resp": "26003"}
 {"time": 6250, "work": "cmd=418wisdom;x=123", "resp": "Bring out all the stops in assignment 4."}
 {"time": 6750, "work": "cmd=countprimes;n=850060", "resp": "67623"}
 {"time": 6900, "work": "cmd=418wisdom;x=56", "resp": "If all else fails... buy Kayvon donuts"}
@@ -46,7 +46,7 @@
 {"time": 9000, "work": "cmd=418wisdom;x=66", "resp": "You will PWN your classmates in the parallelism competition"}
 {"time": 9100, "work": "cmd=countprimes;n=450440", "resp": "37747"}
 {"time": 9250, "work": "cmd=418wisdom;x=123", "resp": "Bring out all the stops in assignment 4."}
-{"time": 9750, "work": "cmd=countprimes;n=850440", "resp": "67657"}
+{"time": 9750, "work": "cmd=countprimes;n=850440", "resp": "67658"}
 {"time": 9900, "work": "cmd=418wisdom;x=56", "resp": "If all else fails... buy Kayvon donuts"}
 {"time": 10000, "work": "cmd=418wisdom;x=66", "resp": "You will PWN your classmates in the parallelism competition"}
 {"time": 10100, "work": "cmd=countprimes;n=450090", "resp": "37714"}
@@ -84,7 +84,7 @@
 {"time": 16750, "work": "cmd=countprimes;n=850060", "resp": "67623"}
 {"time": 16900, "work": "cmd=418wisdom;x=56", "resp": "If all else fails... buy Kayvon donuts"}
 {"time": 17000, "work": "cmd=418wisdom;x=566", "resp": "Come to lecture, there might be donuts!"}
-{"time": 17100, "work": "cmd=countprimes;n=800090", "resp": "63957"}
+{"time": 17100, "work": "cmd=countprimes;n=800090", "resp": "63958"}
 {"time": 17250, "work": "cmd=418wisdom;x=123", "resp": "Bring out all the stops in assignment 4."}
 {"time": 17750, "work": "cmd=countprimes;n=850060", "resp": "67623"}
 {"time": 17900, "work": "cmd=418wisdom;x=56", "resp": "If all else fails... buy Kayvon donuts"}

@@ -17,16 +17,16 @@
 {"time": 4100, "work": "cmd=418wisdom;x=1001", "resp": "You will perform amazingly on exam 2"}
 {"time": 4150, "work": "cmd=countprimes;n=54321", "resp": "5525"}
 {"time": 4200, "work": "cmd=countprimes;n=43423", "resp": "4527"}
-{"time": 4250, "work": "cmd=countprimes;n=80000", "resp": "7836"}
+{"time": 4250, "work": "cmd=countprimes;n=80000", "resp": "7837"}
 {"time": 5000, "work": "cmd=mostviewed;start=2013-02-23;end=2013-03-18", "resp": "lecture/cachecoherence1 -- 584 views"}
 {"time": 5100, "work": "cmd=418wisdom;x=200", "resp": "OMG, 418 is so gr8!"}
 {"time": 5150, "work": "cmd=countprimes;n=70000", "resp": "6935"}
-{"time": 5200, "work": "cmd=countprimes;n=71000", "resp": "7032"}
-{"time": 5250, "work": "cmd=countprimes;n=72000", "resp": "7127"}
+{"time": 5200, "work": "cmd=countprimes;n=71000", "resp": "7033"}
+{"time": 5250, "work": "cmd=countprimes;n=72000", "resp": "7128"}
 {"time": 6000, "work": "cmd=mostviewed;start=2013-01-08;end=2013-03-24", "resp": "lecture/basicarch -- 1914 views"}
 {"time": 6100, "work": "cmd=418wisdom;x=201", "resp": "OMG, 418 is so gr8!"}
 {"time": 6150, "work": "cmd=countprimes;n=73000", "resp": "7218"}
-{"time": 6200, "work": "cmd=countprimes;n=70002", "resp": "6935"}
+{"time": 6200, "work": "cmd=countprimes;n=70002", "resp": "6936"}
 {"time": 6250, "work": "cmd=countprimes;n=78999", "resp": "7746"}
 {"time": 7000, "work": "cmd=mostviewed;start=2013-01-13;end=2013-03-03", "resp": "lecture/basicarch -- 1667 views"}
 {"time": 7100, "work": "cmd=418wisdom;x=9", "resp": "Flatter your TAs with compliments"}
@@ -40,8 +40,8 @@
 {"time": 8250, "work": "cmd=countprimes;n=54000", "resp": "5500"}
 {"time": 9000, "work": "cmd=mostviewed;start=2013-02-10;end=2013-03-15", "resp": "lecture/cachecoherence1 -- 845 views"}
 {"time": 9100, "work": "cmd=418wisdom;x=2001", "resp": "Do as best as you can and just have fun!"}
-{"time": 9150, "work": "cmd=countprimes;n=50000", "resp": "5132"}
-{"time": 9200, "work": "cmd=countprimes;n=84980", "resp": "8275"}
+{"time": 9150, "work": "cmd=countprimes;n=50000", "resp": "5133"}
+{"time": 9200, "work": "cmd=countprimes;n=84980", "resp": "8276"}
 {"time": 9250, "work": "cmd=countprimes;n=67890", "resp": "6761"}
 {"time": 10000, "work": "cmd=mostviewed;start=2013-01-31;end=2013-03-23", "resp": "lecture/gpuarch -- 1079 views"}
 {"time": 10100, "work": "cmd=418wisdom;x=10", "resp": "Do a great project, and it all works out in the end"}
