@@ -58,13 +58,9 @@ void worker_node_init(const Request_msg& params) {
 
 }
 
-void worker_handle_request(const Request_msg& req) {
+void* executeWork(const Request_msg& req) {
 
-
-  // Make the tag of the reponse match the tag of the request.  This
-  // is a way for your master to match worker responses to requests.
   Response_msg resp(req.get_tag());
-
 
   if (req.get_arg("cmd").compare("compareprimes") == 0) {
 
@@ -86,4 +82,9 @@ void worker_handle_request(const Request_msg& req) {
   // send a response string to the master
   worker_send_response(resp);
 
+}
+
+void worker_handle_request(const Request_msg& req) {
+  pthread_t thread_id;
+  pthread_create(&thread_id, NULL, executeWork, &req);
 }

@@ -19,9 +19,9 @@ static struct Master_state {
   bool server_ready;
   int max_num_workers;
   int num_pending_client_requests;
-  int num_waiting; 
+  int num_waiting;
   //std::vector<Worker_handle>workersQueue;
-  
+
   WorkQueue<Worker_handle>workersQueue;
   std::vector<Request_msg>waitingRequests;
 
@@ -87,7 +87,7 @@ void handle_worker_response(Worker_handle worker_handle, const Response_msg& res
   // free(it->second);
   mstate.requestsMap.erase(it);
   mstate.num_pending_client_requests--;
-  
+
   // here means we do not have more work right now
   if( mstate.num_waiting == 0) {
     mstate.workersQueue.put_work( worker_handle );
@@ -115,11 +115,11 @@ void handle_client_request(Client_handle client_handle, const Request_msg& clien
 
   int tag = random();
   Request_msg worker_req(tag, client_req);
- 
+
   // store the waiting client into the map
   mstate.requestsMap[tag] = client_handle;
-  
-  // we run out of workers 
+
+  // we run out of workers
   if( mstate.num_pending_client_requests == mstate.max_num_workers) {
     mstate.waitingRequests.push_back(worker_req);
     mstate.num_waiting ++;
@@ -135,7 +135,7 @@ void handle_client_request(Client_handle client_handle, const Request_msg& clien
   Worker_handle thisWorker = mstate.workersQueue.get_work();
   send_request_to_worker(thisWorker, worker_req);
   //mstate.workersQueue.erase(mstate.workersQueue.begin());
-  
+
   // We're done!  This event handler now returns, and the master
   // process calls another one of your handlers when action is
   // required.
