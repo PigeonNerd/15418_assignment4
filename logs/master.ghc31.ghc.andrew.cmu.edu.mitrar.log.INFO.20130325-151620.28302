@@ -1,0 +1,7 @@
+Log file created at: 2013/03/25 15:16:20
+Running on machine: ghc31.ghc.andrew.cmu.edu
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0325 15:16:20.698993 28302 main_loop.cpp:69] Requesting worker name=my worker 0;tag=1804289383
+I0325 15:16:20.701321 28302 main_loop.cpp:69] Requesting worker name=my worker 1;tag=846930886
+I0325 15:16:20.701338 28302 main_loop.cpp:69] Requesting worker name=my worker 2;tag=1681692777
+I0325 15:16:36.919069 28302 main_loop.cpp:123] Shutting down
