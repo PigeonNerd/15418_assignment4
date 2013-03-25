@@ -84,7 +84,6 @@ void handle_worker_response(Worker_handle worker_handle, const Response_msg& res
   // Here we directly return this response to the client.
   std::map<int, Client_handle>::iterator it = mstate.requestsMap.find(resp.get_tag());
   send_client_response(it->second, resp);
-  // free(it->second);
   mstate.requestsMap.erase(it);
   mstate.num_pending_client_requests--;
   
