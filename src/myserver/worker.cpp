@@ -5,10 +5,11 @@
 #include <assert.h>
 #include <sstream>
 #include <glog/logging.h>
-
 #include "server/messages.h"
 #include "server/worker.h"
 
+//#include <cstring>
+//#include <iostream>
 
 // Generate a valid 'countprimes' request dictionary from integer 'n'
 static void create_computeprimes_req(Request_msg& req, int n) {
@@ -46,6 +47,10 @@ static void execute_compareprimes(const Request_msg& req, Response_msg& resp) {
       resp.set_response("There are more primes in second range.");
 }
 
+void* print_msg( void* arg) {
+    printf("pthread testing \n");
+    return NULL;
+}
 
 void worker_node_init(const Request_msg& params) {
 
@@ -55,36 +60,41 @@ void worker_node_init(const Request_msg& params) {
   // processes will run on an instance with a dual-core CPU.
 
   printf("**** Initializing worker: %s ****\n", params.get_arg("name").c_str());
-
+  pthread_t thread_id;
+  pthread_attr_t attr; // thread attribute
+  // set thread detachstate attribute to DETACHED 
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+  pthread_create(&thread_id, &attr, print_msg, NULL);
 }
 
-void* executeWork(const Request_msg& req) {
-
-  Response_msg resp(req.get_tag());
-
-  if (req.get_arg("cmd").compare("compareprimes") == 0) {
-
+void* executeWork(void* arg) {
+  Request_msg* req = (Request_msg*) arg;
+  Response_msg resp((*req).get_tag());
+  if ((*req).get_arg("cmd").compare("compareprimes") == 0) {
     // The primerange command needs to be special cased since it is
     // built on 4 calls to execute_execute work.  All other requests
     // from the client are one-to-one with calls to
     // execute_work.
-
-    execute_compareprimes(req, resp);
-
+    execute_compareprimes(*req, resp);
   } else {
-
     // actually perform the work.  The response string is filled in by
     // 'execute_work'
-    execute_work(req, resp);
-
+    execute_work(*req, resp);
   }
-
   // send a response string to the master
+  free(arg);
   worker_send_response(resp);
-
+  return NULL;
 }
 
 void worker_handle_request(const Request_msg& req) {
   pthread_t thread_id;
-  pthread_create(&thread_id, NULL, executeWork, &req);
+  pthread_attr_t attr; // thread attribute
+  Request_msg* cpyReq = new Request_msg(req);
+  // set thread detachstate attribute to DETACHED 
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+  pthread_create(&thread_id, &attr, executeWork, cpyReq);
+  //executeWork((void*) &req);
 }

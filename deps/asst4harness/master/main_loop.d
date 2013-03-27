@@ -453,8 +453,8 @@ objs/asst4harness/master/main_loop.o deps/asst4harness/master/main_loop.d : src/
  /afs/cs/academic/class/15418-s13/public/include/boost/smart_ptr/detail/sp_if_array.hpp \
  /afs/cs/academic/class/15418-s13/public/include/boost/smart_ptr/allocate_shared_array.hpp \
  /afs/cs/academic/class/15418-s13/public/include/boost/smart_ptr/detail/allocate_array_helper.hpp \
- /afs/andrew.cmu.edu/usr13/mitrar/Documents/15418/15418_assignment4/src/asst4harness/comm/comm.h \
- /afs/andrew.cmu.edu/usr13/mitrar/Documents/15418/15418_assignment4/src/asst4harness/types/types.h \
+ /afs/andrew.cmu.edu/usr21/yingchal/private/418/hw4/asst4/src/asst4harness/comm/comm.h \
+ /afs/andrew.cmu.edu/usr21/yingchal/private/418/hw4/asst4/src/asst4harness/types/types.h \
  /afs/cs/academic/class/15418-s13/public/include/boost/shared_ptr.hpp \
- /afs/andrew.cmu.edu/usr13/mitrar/Documents/15418/15418_assignment4/src/asst4include/server/messages.h \
- /afs/andrew.cmu.edu/usr13/mitrar/Documents/15418/15418_assignment4/src/asst4include/server/master.h
+ /afs/andrew.cmu.edu/usr21/yingchal/private/418/hw4/asst4/src/asst4include/server/messages.h \
+ /afs/andrew.cmu.edu/usr21/yingchal/private/418/hw4/asst4/src/asst4include/server/master.h

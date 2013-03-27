@@ -286,6 +286,6 @@ objs/asst4harness/comm/comm.o deps/asst4harness/comm/comm.d : src/asst4harness/c
  /usr/include/asm/socket.h /usr/include/asm-generic/socket.h \
  /usr/include/asm/sockios.h /usr/include/asm-generic/sockios.h \
  /usr/include/string.h \
- /afs/andrew.cmu.edu/usr13/mitrar/Documents/15418/15418_assignment4/src/asst4harness/comm/comm.h \
- /afs/andrew.cmu.edu/usr13/mitrar/Documents/15418/15418_assignment4/src/asst4harness/types/types.h \
+ /afs/andrew.cmu.edu/usr21/yingchal/private/418/hw4/asst4/src/asst4harness/comm/comm.h \
+ /afs/andrew.cmu.edu/usr21/yingchal/private/418/hw4/asst4/src/asst4harness/types/types.h \
  /afs/cs/academic/class/15418-s13/public/include/boost/shared_ptr.hpp

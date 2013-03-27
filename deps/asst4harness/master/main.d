@@ -103,9 +103,9 @@ objs/asst4harness/master/main.o deps/asst4harness/master/main.d : src/asst4harne
  /usr/include/bits/stdio.h /usr/include/stdlib.h \
  /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
  /usr/include/alloca.h \
- /afs/andrew.cmu.edu/usr13/mitrar/Documents/15418/15418_assignment4/src/asst4harness/comm/connect.h \
- /afs/andrew.cmu.edu/usr13/mitrar/Documents/15418/15418_assignment4/src/asst4harness/comm/comm.h \
- /afs/andrew.cmu.edu/usr13/mitrar/Documents/15418/15418_assignment4/src/asst4harness/types/types.h \
+ /afs/andrew.cmu.edu/usr21/yingchal/private/418/hw4/asst4/src/asst4harness/comm/connect.h \
+ /afs/andrew.cmu.edu/usr21/yingchal/private/418/hw4/asst4/src/asst4harness/comm/comm.h \
+ /afs/andrew.cmu.edu/usr21/yingchal/private/418/hw4/asst4/src/asst4harness/types/types.h \
  /afs/cs/academic/class/15418-s13/public/include/boost/shared_ptr.hpp \
  /afs/cs/academic/class/15418-s13/public/include/boost/smart_ptr/shared_ptr.hpp \
  /afs/cs/academic/class/15418-s13/public/include/boost/config.hpp \
@@ -158,4 +158,4 @@ objs/asst4harness/master/main.o deps/asst4harness/master/main.d : src/asst4harne
  /usr/local/lib/gcc/x86_64-unknown-linux-gnu/4.6.3/../../../../include/c++/4.6.3/bits/algorithmfwd.h \
  /usr/local/lib/gcc/x86_64-unknown-linux-gnu/4.6.3/../../../../include/c++/4.6.3/bits/stl_heap.h \
  /afs/cs/academic/class/15418-s13/public/include/boost/smart_ptr/detail/operator_bool.hpp \
- /afs/andrew.cmu.edu/usr13/mitrar/Documents/15418/15418_assignment4/src/asst4include/server/master.h
+ /afs/andrew.cmu.edu/usr21/yingchal/private/418/hw4/asst4/src/asst4include/server/master.h
