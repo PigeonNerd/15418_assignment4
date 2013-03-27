@@ -21,7 +21,7 @@ int accept_fd = -1;
 
 DEFINE_string(address, "localhost:15418", "What address to listen on.");
 DECLARE_bool(log_network);
-DEFINE_int32(max_workers, 1, "Maximum number of workers the master can request");
+DEFINE_int32(max_workers, 3, "Maximum number of workers the master can request");
 
 int main(int argc, char** argv) {
   int err;
