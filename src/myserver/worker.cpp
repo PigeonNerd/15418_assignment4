@@ -7,9 +7,16 @@
 #include <glog/logging.h>
 #include "server/messages.h"
 #include "server/worker.h"
+#include "tools/work_queue.h"
 
 //#include <cstring>
 //#include <iostream>
+
+struct Worker_state {
+    WorkQueue<Request_msg> cpu_work_queue;    
+    WorkQueue<Request_msg> disk_work_queue;    
+} wstate;
+
 
 // Generate a valid 'countprimes' request dictionary from integer 'n'
 static void create_computeprimes_req(Request_msg& req, int n) {
@@ -47,8 +54,27 @@ static void execute_compareprimes(const Request_msg& req, Response_msg& resp) {
       resp.set_response("There are more primes in second range.");
 }
 
-void* print_msg( void* arg) {
-    printf("pthread testing \n");
+void* executeWork_cpu(void* arg) {
+    while(1) {
+      Request_msg req = wstate.cpu_work_queue.get_work();
+      Response_msg resp(req.get_tag());
+      if (req.get_arg("cmd").compare("compareprimes") == 0) {
+        execute_compareprimes(req, resp);
+      } else {
+        execute_work(req, resp);
+      }
+      worker_send_response(resp);
+    }
+    return NULL;
+}
+void* executeWork_disk(void* arg) {
+    while(1) {
+      Request_msg req = wstate.disk_work_queue.get_work();
+      Response_msg resp(req.get_tag());
+      // There is only one type here
+      execute_work(req, resp);
+      worker_send_response(resp);
+    }
     return NULL;
 }
 
@@ -58,14 +84,13 @@ void worker_node_init(const Request_msg& params) {
   // might initialize a few data structures, or maybe even spawn a few
   // pthreads here.  Remember, when running on Amazon servers, worker
   // processes will run on an instance with a dual-core CPU.
-
   printf("**** Initializing worker: %s ****\n", params.get_arg("name").c_str());
-  pthread_t thread_id;
-  pthread_attr_t attr; // thread attribute
-  // set thread detachstate attribute to DETACHED 
-  pthread_attr_init(&attr);
-  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-  pthread_create(&thread_id, &attr, print_msg, NULL);
+  pthread_t thread_1;
+  pthread_t thread_2;
+  pthread_t thread_3;
+  pthread_create(&thread_1, NULL, executeWork_cpu, NULL);
+  pthread_create(&thread_2, NULL, executeWork_cpu, NULL);
+  pthread_create(&thread_3, NULL, executeWork_disk, NULL);
 }
 
 void* executeWork(void* arg) {
@@ -73,7 +98,7 @@ void* executeWork(void* arg) {
   Response_msg resp((*req).get_tag());
   if ((*req).get_arg("cmd").compare("compareprimes") == 0) {
     // The primerange command needs to be special cased since it is
-    // built on 4 calls to execute_execute work.  All other requests
+    // built on 4 calls to execute_work.  All other requests
     // from the client are one-to-one with calls to
     // execute_work.
     execute_compareprimes(*req, resp);
@@ -89,12 +114,16 @@ void* executeWork(void* arg) {
 }
 
 void worker_handle_request(const Request_msg& req) {
-  pthread_t thread_id;
+   if(req.get_arg("cmd").compare("mostviewed") == 0) {
+        wstate.disk_work_queue.put_work(req);
+        return;
+   }
+    wstate.cpu_work_queue.put_work(req);
+/*pthread_t thread_id;
   pthread_attr_t attr; // thread attribute
   Request_msg* cpyReq = new Request_msg(req);
   // set thread detachstate attribute to DETACHED 
   pthread_attr_init(&attr);
   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-  pthread_create(&thread_id, &attr, executeWork, cpyReq);
-  //executeWork((void*) &req);
+  pthread_create(&thread_id, &attr, executeWork, cpyReq);*/
 }

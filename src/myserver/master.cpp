@@ -8,6 +8,12 @@
 #include "server/messages.h"
 #include "server/master.h"
 #include "tools/work_queue.h"
+#include <iostream>
+
+typedef struct request_Info {
+    Request_msg* req;
+    Client_handle client;
+} reqInfo;
 
 static struct Master_state {
 
@@ -19,12 +25,13 @@ static struct Master_state {
   bool server_ready;
   int max_num_workers;
   int num_pending_client_requests;
-  int num_waiting;
+
   int num_idle_workers;
-  std::vector<Worker_handle>workersQueue;
-  //WorkQueue<Worker_handle>workersQueue;
-  std::vector<Request_msg>waitingRequests;
-  std:: map<int, Client_handle> requestsMap;
+  std::vector<Worker_handle>cpu_workers_queue;
+  std::vector<Worker_handle>disk_workers_queue;
+  std::vector<Request_msg>cpu_waiting_queue;
+  std::vector<Request_msg>disk_waiting_queue;
+  std:: map<int, reqInfo*> requestsMap;
 
   Worker_handle my_worker;
   Client_handle waiting_client;
@@ -39,10 +46,9 @@ void master_node_init(int max_workers, int& tick_period) {
   //printf("The maximum number of workers %d\n", max_workers);
   // HOW TO SET THIS NUMBER ?
   //mstate.max_num_workers = max_workers;
-  mstate.max_num_workers = 4;
+  mstate.max_num_workers = 2; 
 
   mstate.num_pending_client_requests = 0;
-  mstate.num_waiting = 0;
   // used for debug
   mstate.num_idle_workers = 0;
   
@@ -52,7 +58,7 @@ void master_node_init(int max_workers, int& tick_period) {
   mstate.server_ready = false;
 
   // here we temporally request 3 worker nodes
-  for(int i = 0 ; i < 2; i++) {
+  for(int i = 0 ; i < 1; i++) {
       int tag = random();
       Request_msg req(tag);
       char name[20];
@@ -68,8 +74,10 @@ void handle_new_worker_online(Worker_handle worker_handle, int tag) {
   // corresponds to.  Since the starter code only sends off one new
   // worker request, we don't use it here.
 
-  mstate.workersQueue.push_back( worker_handle );
-  mstate.workersQueue.push_back( worker_handle );
+  mstate.cpu_workers_queue.push_back( worker_handle );
+  mstate.cpu_workers_queue.push_back( worker_handle );
+  mstate.disk_workers_queue.push_back( worker_handle );
+  
   mstate.num_idle_workers += 2;
   //printf("Number of idle workers: %d\n",mstate.num_idle_workers);
   // Now that a worker is booted, let the system know the server is
@@ -82,25 +90,39 @@ void handle_new_worker_online(Worker_handle worker_handle, int tag) {
 }
 
 void handle_worker_response(Worker_handle worker_handle, const Response_msg& resp) {
-
-  // Master node has received a response from one of its workers.
-  // Here we directly return this response to the client.
-  std::map<int, Client_handle>::iterator it = mstate.requestsMap.find(resp.get_tag());
-  send_client_response(it->second, resp);
+  bool isDiskRequestDone = false;
+  std::map<int,reqInfo*>::iterator it = mstate.requestsMap.find(resp.get_tag());
+  // send the message back to the client
+  send_client_response((it->second)->client, resp);
+  //cout<<(*((it->second)->req)).get_arg("cmd")<<"###\n";
+  if( (*((it->second)->req)).get_arg("cmd").compare("mostviewed") == 0) {
+        isDiskRequestDone = true;
+  }
+  delete( (it->second)->req );
+  delete( it->second );
   mstate.requestsMap.erase(it);
-  mstate.num_pending_client_requests--;
+  if( isDiskRequestDone ) {
+    if(mstate.disk_waiting_queue.size() == 0) {
+        mstate.disk_workers_queue.push_back( worker_handle);
+    }else {
+        Request_msg thisRequest = mstate.disk_waiting_queue.front();
+        send_request_to_worker( worker_handle, thisRequest);
+        mstate.disk_waiting_queue.erase(mstate.disk_waiting_queue.begin());
+    }
+    return;
+  }
 
+  mstate.num_pending_client_requests--;
   // here means we do not have more work right now
-  if( mstate.num_waiting == 0) {
-    mstate.workersQueue.push_back( worker_handle );
+  if( mstate.cpu_waiting_queue.size() == 0) {
+    mstate.cpu_workers_queue.push_back( worker_handle );
     mstate.num_idle_workers++;
     //printf("Number of idle workers: %d\n",mstate.num_idle_workers);
   }else {
     mstate.num_pending_client_requests++;
-    Request_msg thisRequest = mstate.waitingRequests.front();
+    Request_msg thisRequest = mstate.cpu_waiting_queue.front();
     send_request_to_worker( worker_handle, thisRequest);
-    mstate.waitingRequests.erase(mstate.waitingRequests.begin());
-    mstate.num_waiting--;
+    mstate.cpu_waiting_queue.erase(mstate.cpu_waiting_queue.begin());
   }
 }
 
@@ -118,32 +140,36 @@ void handle_client_request(Client_handle client_handle, const Request_msg& clien
 
   int tag = random();
   Request_msg worker_req(tag, client_req);
-
   // store the waiting client into the map
-  mstate.requestsMap[tag] = client_handle;
+  reqInfo* thisInfo = new reqInfo();
+  thisInfo->req = new Request_msg(worker_req);
 
-  // we run out of workers
-  if( mstate.num_pending_client_requests == mstate.max_num_workers) {
-    mstate.waitingRequests.push_back(worker_req);
-    mstate.num_waiting ++;
-    //printf("number waiting : %d\n", mstate.num_waiting);
+  thisInfo->client = client_handle;
+  //mstate.requestsMap[tag] = client_handle;
+  mstate.requestsMap[tag] = thisInfo;
+  
+  // we have disk intensive work
+  if(worker_req.get_arg("cmd").compare("mostviewed") == 0) {
+      // we have worker for it
+      if( mstate.disk_workers_queue.size() != 0) {
+        Worker_handle thisWorker = mstate.disk_workers_queue.front();
+        send_request_to_worker(thisWorker, worker_req);
+        mstate.disk_workers_queue.erase(mstate.disk_workers_queue.begin());
+      }else {
+        mstate.disk_waiting_queue.push_back(worker_req);
+      }
     return;
   }
-  //printf("pending: %d\n", mstate.num_pending_client_requests);
+  // we run out of workers for cpu intensive work
+  if( mstate.num_pending_client_requests == mstate.max_num_workers) {
+    mstate.cpu_waiting_queue.push_back(worker_req);
+    return;
+  }
   mstate.num_pending_client_requests++;
-  // Fire off request to the worker.  Eventually the worker will
-  // respond, and your 'handle_worker_response' event handler will be
-  // called to forward the worker's response back to the server.
-
-  Worker_handle thisWorker = mstate.workersQueue.front();
+  Worker_handle thisWorker = mstate.cpu_workers_queue.front();
   mstate.num_idle_workers--;
-  //printf("Number of idle workers: %d\n",mstate.num_idle_workers);
   send_request_to_worker(thisWorker, worker_req);
-  mstate.workersQueue.erase(mstate.workersQueue.begin());
-
-  // We're done!  This event handler now returns, and the master
-  // process calls another one of your handlers when action is
-  // required.
+  mstate.cpu_workers_queue.erase(mstate.cpu_workers_queue.begin());
 }
 
 
@@ -153,7 +179,7 @@ void handle_tick() {
   // fixed time intervals, according to how you set 'tick_period' in
   // 'master_node_init'.
   // p
-  printf("NUM OF WAITING REQUESTS: %d\n", mstate.num_waiting);
+  printf("NUM OF WAITING REQUESTS: %lu\n", mstate.cpu_waiting_queue.size());
   printf("NUM OF PENDING REQUESTS: %d\n", mstate.num_pending_client_requests);
 }
 
